@@ -44,7 +44,6 @@ ascii_art = {
         =.                                                  .=
         =.                                                  .=
         =.                                                  .=
-        =.                                                  .=
         =....................................................+
         .::::::::::::::::::::::::::::::::::::::::::::::::::::.
     """,
@@ -101,40 +100,43 @@ ascii_art = {
     """
 }
 
-# Stack list
-stack = []
+class RingStack:
+    """Class to manage the stack of rings"""
+    def __init__(self):
+        self.stack = []
 
-def print_stack():
-    """Print the stack of rings with color"""
-    print("\nCurrent stack:")
-    if not stack:
-        print("The stack is empty.")
-    else:
-        for idx, ring in enumerate(reversed(stack), start=1):
-            print(f"{colors[ring]}Ring {idx}: {ring.capitalize()}{Style.RESET_ALL}")
-            print(f"{colors[ring]}{ascii_art[ring]}{Style.RESET_ALL}")  # Display the ASCII art with color
-    print("\n")
+    def push(self, ring_color):
+        """Add a colored ring to the stack"""
+        if ring_color in colors:
+            self.stack.append(ring_color)
+            print(f"Added a {ring_color} ring to the stack.")
+        else:
+            print("Invalid color, please choose from red, orange, yellow, green, or blue.")
+        self.print_stack()
 
-def add_ring(ring_color):
-    """Add a colored ring"""
-    if ring_color in colors:
-        stack.append(ring_color)
-        print(f"Added a {ring_color} ring to the stack.")
-    else:
-        print("Invalid color, please choose from red, orange, yellow, green, or blue.")
-    print_stack()
+    def pop(self):
+        """Remove the top ring from the stack"""
+        if self.stack:
+            removed_ring = self.stack.pop()
+            print(f"Removed the top ring: {removed_ring.capitalize()} ring.")
+        else:
+            print("The stack is already empty.")
+        self.print_stack()
 
-def remove_ring():
-    """Remove the top ring from the stack"""
-    if stack:
-        removed_ring = stack.pop()
-        print(f"Removed the top ring: {removed_ring.capitalize()} ring.")
-    else:
-        print("The stack is already empty.")
-    print_stack()
+    def print_stack(self):
+        """Print the stack of rings with color"""
+        print("\nCurrent stack:")
+        if not self.stack:
+            print("The stack is empty.")
+        else:
+            for idx, ring in enumerate(reversed(self.stack), start=1):
+                print(f"{colors[ring]}Ring {idx}: {ring.capitalize()}{Style.RESET_ALL}")
+                print(f"{colors[ring]}{ascii_art[ring]}{Style.RESET_ALL}")  # Display the ASCII art with color
+        print("\n")
 
 def bigbucks():
     """Main loop for managing the stack of rings"""
+    ring_stack = RingStack()  # Create an instance of RingStack
     while True:
         print("Options:")
         print("1. Add a ring")
@@ -144,9 +146,9 @@ def bigbucks():
 
         if choice == '1':
             ring_color = input("Enter the color of the ring (red, orange, yellow, green, blue): ").lower()
-            add_ring(ring_color)
+            ring_stack.push(ring_color)
         elif choice == '2':
-            remove_ring()
+            ring_stack.pop()
         elif choice == '3':
             print("Exiting...")
             break
